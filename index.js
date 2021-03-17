@@ -55,9 +55,9 @@ const save = (vpns) => {
   });
 };
 
-const startOpenvpn = (options = []) => {
+const startOpenvpn = (openvpnLocation, options = []) => {
   logger.info('Starting openvpn...');
-  const openvpn = `"${options.openvpn || which.sync('openvpn')}"`;
+  const openvpn = `"${openvpnLocation || which.sync('openvpn')}"`;
   const proc = execa(openvpn, ['--config', `"${filePath}"`].concat(options), { shell: true });
 
   proc.stdout.pipe(logger.stream);
@@ -90,7 +90,7 @@ const execute = (options) => {
     })
     .then(filter(options.country))
     .then(save)
-    .then(() => startOpenvpn(options.openvpn_opts))
+    .then(() => startOpenvpn(options.openvpn, options.openvpn_opts))
     .catch(logger.error);
 };
 
