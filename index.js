@@ -57,7 +57,7 @@ const save = (vpns) => {
 
 const startOpenvpn = (options = []) => {
   logger.info('Starting openvpn...');
-  const openvpn = `"${which.sync('openvpn')}"`;
+  const openvpn = `"${options.openvpn || which.sync('openvpn')}"`;
   const proc = execa(openvpn, ['--config', `"${filePath}"`].concat(options), { shell: true });
 
   proc.stdout.pipe(logger.stream);
